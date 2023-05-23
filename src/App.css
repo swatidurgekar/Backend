@@ -27,3 +27,39 @@ button:active {
   background-color: #460897;
   border-color: #460897;
 }
+
+.progress {
+  margin: auto;
+  top: 300px;
+  position: relative;
+  height: 10px;
+  width: 50%;
+  /* border: 10px solid black; */
+  border-radius: 15px;
+}
+
+.progress .color {
+  position: absolute;
+  background-color: white;
+  width: 0px;
+  height: 10px;
+  border-radius: 15px;
+  animation: progres 4s infinite linear;
+}
+@keyframes progres {
+  0% {
+    width: 0%;
+  }
+  25% {
+    width: 25%;
+  }
+  50% {
+    width: 50%;
+  }
+  75% {
+    width: 75%;
+  }
+  100% {
+    width: 100%;
+  }
+}
