@@ -1,6 +1,6 @@
-import { useRef } from "react";
+import { memo, useRef } from "react";
 
-const Form = () => {
+const Form = (props) => {
   const title = useRef();
   const openingText = useRef();
   const releaseDate = useRef();
@@ -12,7 +12,7 @@ const Form = () => {
       openingText: openingText.current.value,
       releaseDate: releaseDate.current.value,
     };
-    console.log(newMovie);
+    props.addMovieHandler(newMovie);
   };
 
   return (
@@ -52,4 +52,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default memo(Form);
