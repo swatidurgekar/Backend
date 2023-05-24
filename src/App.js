@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import Form from "./components/Form";
 import MoviesList from "./components/MoviesList";
 import "./App.css";
 
@@ -10,33 +10,36 @@ function App() {
   let interval;
 
   async function retry() {
-    await fetch("https://swapi.dev/api/film/");
+    await fetch("https://swapi.dev/api/films/");
   }
 
-  useEffect(async () => {
-    setIsLoading(true);
-    setError(null);
+  useEffect(() => {
+    async function fetchData() {
+      setIsLoading(true);
+      setError(null);
 
-    try {
-      const response = await fetch("https://swapi.dev/api/films/");
-      if (!response.ok) {
-        throw new Error("Something went wrong ....Retrying");
+      try {
+        const response = await fetch("https://swapi.dev/api/films/");
+        if (!response.ok) {
+          throw new Error("Something went wrong ....Retrying");
+        }
+        const data = await response.json();
+
+        const tranformedMovies = data.results.map((movieData) => {
+          return {
+            id: movieData.episode_id,
+            title: movieData.title,
+            openingText: movieData.opening_crawl,
+            releaseDate: movieData.release_date,
+          };
+        });
+        setMovies(tranformedMovies);
+      } catch (error) {
+        setError(error.message);
       }
-      const data = await response.json();
-
-      const tranformedMovies = data.results.map((movieData) => {
-        return {
-          id: movieData.episode_id,
-          title: movieData.title,
-          openingText: movieData.opening_crawl,
-          releaseDate: movieData.release_date,
-        };
-      });
-      setMovies(tranformedMovies);
-    } catch (error) {
-      setError(error.message);
+      setIsLoading(false);
     }
-    setIsLoading(false);
+    fetchData();
   }, []);
 
   let content = <p>found no movies.</p>;
@@ -72,6 +75,10 @@ function App() {
 
   return (
     <React.Fragment>
+      <section>
+        <Form />
+      </section>
+
       <section>
         <button>Fetch Movies</button>
       </section>
