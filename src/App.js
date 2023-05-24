@@ -7,19 +7,18 @@ function App() {
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [stopRetrying, setStopRetrying] = useState(false);
   let interval;
 
   async function retry() {
     await fetch("https://swapi.dev/api/film/");
   }
 
-  async function fetchMoviesHandler() {
+  useEffect(async () => {
     setIsLoading(true);
     setError(null);
 
     try {
-      const response = await fetch("https://swapi.dev/api/film/");
+      const response = await fetch("https://swapi.dev/api/films/");
       if (!response.ok) {
         throw new Error("Something went wrong ....Retrying");
       }
@@ -38,7 +37,7 @@ function App() {
       setError(error.message);
     }
     setIsLoading(false);
-  }
+  }, []);
 
   let content = <p>found no movies.</p>;
 
@@ -51,7 +50,7 @@ function App() {
   }
 
   if (error) {
-    let interval = setInterval(retry, 5000);
+    interval = setInterval(retry, 5000);
     function stop() {
       clearInterval(interval);
     }
@@ -74,7 +73,7 @@ function App() {
   return (
     <React.Fragment>
       <section>
-        <button onClick={fetchMoviesHandler}>Fetch Movies</button>
+        <button>Fetch Movies</button>
       </section>
       <section>{content}</section>
     </React.Fragment>
